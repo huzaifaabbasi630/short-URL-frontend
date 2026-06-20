@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://urlback.vercel.app';
-const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://halfurl.vercel.app';
+const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || 'https://urlback.vercel.app').replace(/\/$/, '');
+const FRONTEND_URL = (process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://halfurl.vercel.app').replace(/\/$/, '');
 
 export interface ShortenUrlRequest {
   originalUrl: string;
