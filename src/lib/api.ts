@@ -47,9 +47,9 @@ export async function shortenUrl(
       },
     });
 
-    // Update shortUrl to use frontend domain
+    // Update shortUrl to use backend domain for redirection
     const responseData = response.data;
-    responseData.shortUrl = `${FRONTEND_URL}/${responseData.shortCode}`;
+    responseData.shortUrl = `${BACKEND_URL}/${responseData.shortCode}`;
 
     return responseData;
   } catch (error) {
