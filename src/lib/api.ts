@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://short-url-backend-orcin.vercel.app';
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://urlback.vercel.app';
 const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://halfurl.vercel.app';
 
 export interface ShortenUrlRequest {
