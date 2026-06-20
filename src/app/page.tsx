@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { Link2, Settings, Copy, Download, ChevronDown, X } from 'lucide-react';
 import Link from 'next/link';
 import QRCode from '@/components/QRCode';
+import { shortenUrl } from '@/lib/api';
 
 export default function Home() {
   const [url, setUrl] = useState('');
@@ -19,26 +20,14 @@ export default function Home() {
 
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/shorten`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          originalUrl: url,
-          customBackhalf: customBackhalf || undefined,
-        }),
+      const data = await shortenUrl({
+        originalUrl: url,
+        customBackhalf: customBackhalf || undefined,
       });
-
-      const data = await response.json();
-      if (response.ok) {
-        setShortenedUrl(data.shortUrl);
-      } else {
-        alert(data.error || 'Failed to shorten URL');
-      }
+      setShortenedUrl(data.shortUrl);
     } catch (error) {
       console.error('Error shortening URL:', error);
-      alert('Failed to shorten URL');
+      alert(error instanceof Error ? error.message : 'Failed to shorten URL');
     } finally {
       setLoading(false);
     }

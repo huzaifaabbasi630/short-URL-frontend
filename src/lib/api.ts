@@ -1,4 +1,7 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://short-url-backend-orcin.vercel.app';
+const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://halfurl.vercel.app';
 
 export interface ShortenUrlRequest {
   originalUrl: string;
@@ -33,51 +36,65 @@ export interface AnalyticsData {
 export async function shortenUrl(
   data: ShortenUrlRequest
 ): Promise<ShortenUrlResponse> {
-  const response = await fetch(`${API_URL}/api/v1/shorten`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
+  try {
+    const response = await axios.post(`${BACKEND_URL}/api/v1/shorten`, {
+      originalUrl: data.originalUrl,
+      customBackhalf: data.customBackhalf,
+    }, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to shorten URL');
+    // Update shortUrl to use frontend domain
+    const responseData = response.data;
+    responseData.shortUrl = `${FRONTEND_URL}/${responseData.shortCode}`;
+
+    return responseData;
+  } catch (error) {
+    console.error('Error shortening URL:', error);
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.error || 'Failed to shorten URL');
+    }
+    throw new Error('Failed to shorten URL');
   }
-
-  return response.json();
 }
 
 export async function getUrls(): Promise<UrlData[]> {
   // This endpoint needs to be created in the backend
-  const response = await fetch(`${API_URL}/api/v1/urls`);
-
-  if (!response.ok) {
+  try {
+    const response = await axios.get(`${BACKEND_URL}/api/v1/urls`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching URLs:', error);
     throw new Error('Failed to fetch URLs');
   }
-
-  return response.json();
 }
 
 export async function getAnalytics(shortCode: string): Promise<AnalyticsData[]> {
   // This endpoint needs to be created in the backend
-  const response = await fetch(`${API_URL}/api/v1/analytics/${shortCode}`);
-
-  if (!response.ok) {
+  try {
+    const response = await axios.get(`${BACKEND_URL}/api/v1/analytics/${shortCode}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching analytics:', error);
     throw new Error('Failed to fetch analytics');
   }
-
-  return response.json();
 }
 
 export async function deleteUrl(shortCode: string): Promise<void> {
   // This endpoint needs to be created in the backend
-  const response = await fetch(`${API_URL}/api/v1/urls/${shortCode}`, {
-    method: 'DELETE',
-  });
-
-  if (!response.ok) {
+  try {
+    await axios.delete(`${BACKEND_URL}/api/v1/urls/${shortCode}`, {
+      withCredentials: true,
+    });
+  } catch (error) {
+    console.error('Error deleting URL:', error);
     throw new Error('Failed to delete URL');
   }
 }
