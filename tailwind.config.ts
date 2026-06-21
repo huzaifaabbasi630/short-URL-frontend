@@ -9,12 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#07191e',
-        foreground: '#ffffff',
-        primary: '#02f5a1',
-        'primary-dark': '#01d486',
-        secondary: '#1a2f35',
-        accent: '#0a2a33',
+        background: '#F0FDF4',
+        foreground: '#14532D',
+        primary: '#16A34A',
+        'primary-dark': '#15803D',
+        secondary: '#FFFFFF',
+        accent: '#DCFCE7',
+        'accent-dark': '#BBF7D0',
       },
     },
   },

@@ -49,69 +49,69 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#07191e] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-[#F0FDF4] text-[#14532D] flex items-center justify-center">
         <div className="text-xl">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#07191e] text-white">
+    <div className="min-h-screen bg-[#F0FDF4] text-[#14532D]">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Link href="/" className="text-gray-400 hover:text-white transition-colors">
+            <Link href="/" className="text-gray-600 hover:text-[#14532D] transition-colors">
               <ArrowLeft className="w-6 h-6" />
             </Link>
             <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
           </div>
           <Link
             href="/"
-            className="px-4 py-2 bg-[#02f5a1] hover:bg-[#01d486] text-black font-semibold rounded-lg transition-colors"
+            className="px-4 py-2 bg-[#16A34A] hover:bg-[#15803D] text-white font-semibold rounded-lg transition-colors"
           >
             Create New Link
           </Link>
         </div>
 
         {/* URL List */}
-        <div className="bg-[#1a2f35] rounded-2xl overflow-hidden">
-          <div className="p-6 border-b border-gray-700">
+        <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
+          <div className="p-6 border-b border-[#DCFCE7]">
             <h2 className="text-xl font-semibold">Your Links</h2>
           </div>
           {urls.length === 0 ? (
-            <div className="p-12 text-center text-gray-400">
+            <div className="p-12 text-center text-gray-600">
               <p>No links created yet. Create your first link to get started!</p>
             </div>
           ) : (
-            <div className="divide-y divide-gray-700">
+            <div className="divide-y divide-[#DCFCE7]">
               {urls.map((url) => (
                 <div
                   key={url.shortCode}
-                  className="p-6 hover:bg-[#0a2a33] transition-colors cursor-pointer"
+                  className="p-6 hover:bg-[#DCFCE7] transition-colors cursor-pointer"
                   onClick={() => setSelectedUrl(url)}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-2">
-                        <span className="text-[#02f5a1] font-mono font-semibold">
+                        <span className="text-[#16A34A] font-mono font-semibold">
                           /{url.shortCode}
                         </span>
                         <a
                           href={url.shortUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-gray-400 hover:text-white transition-colors"
+                          className="text-gray-600 hover:text-[#14532D] transition-colors"
                           onClick={(e) => e.stopPropagation()}
                         >
                           <ExternalLink className="w-4 h-4" />
                         </a>
                       </div>
-                      <p className="text-gray-400 text-sm truncate mb-3">{url.originalUrl}</p>
+                      <p className="text-gray-600 text-sm truncate mb-3">{url.originalUrl}</p>
                       <div className="flex items-center gap-6 text-sm">
                         <div className="flex items-center gap-2">
-                          <BarChart3 className="w-4 h-4 text-[#02f5a1]" />
-                          <span className="text-gray-300">{url.totalClicks} clicks</span>
+                          <BarChart3 className="w-4 h-4 text-[#16A34A]" />
+                          <span className="text-gray-700">{url.totalClicks} clicks</span>
                         </div>
                         <span className="text-gray-500">
                           {new Date(url.createdAt).toLocaleDateString()}
@@ -123,7 +123,7 @@ export default function Dashboard() {
                         e.stopPropagation();
                         handleDelete(url.shortCode);
                       }}
-                      className="text-gray-400 hover:text-red-400 transition-colors"
+                      className="text-gray-600 hover:text-red-500 transition-colors"
                     >
                       <Trash2 className="w-5 h-5" />
                     </button>
@@ -136,20 +136,20 @@ export default function Dashboard() {
 
         {/* Analytics Panel (shown when a URL is selected) */}
         {selectedUrl && (
-          <div className="mt-8 bg-[#1a2f35] rounded-2xl p-6">
+          <div className="mt-8 bg-white rounded-2xl p-6 shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold">
                 Analytics for /{selectedUrl.shortCode}
               </h2>
               <button
                 onClick={() => setSelectedUrl(null)}
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-600 hover:text-[#14532D] transition-colors"
               >
                 <ArrowLeft className="w-6 h-6" />
               </button>
             </div>
-            <div className="text-center text-gray-400 py-12">
-              <BarChart3 className="w-16 h-16 mx-auto mb-4 text-[#02f5a1]" />
+            <div className="text-center text-gray-600 py-12">
+              <BarChart3 className="w-16 h-16 mx-auto mb-4 text-[#16A34A]" />
               <p className="text-lg mb-2">Detailed analytics coming soon!</p>
               <p className="text-sm">
                 Total clicks: {selectedUrl.totalClicks}
